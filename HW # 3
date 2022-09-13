@@ -39,3 +39,147 @@ def composition(list_num, list_num_2):
         return list_num_2
 
 print(f"Произведение пар чисел списка -> {composition(list_numbers, list_numbers_2)}")
+
+------------------------------------------------
+
+3.# Задайте список из вещественных чисел. Напишите программу, которая найдёт 
+# разницу между максимальным и минимальным значением дробной части элементов.
+# *Пример:*
+# - [1.1, 1.2, 3.1, 5.17, 10.01] => 0.19 или 19
+# - [4.07, 5.1, 8.2444, 6.98] => 0.91 или 91
+list_num = [1.1, 1.2, 3.1, 5.17, 10.01]
+
+def check(number):
+    '''
+    Получение дробной части    
+    '''
+    length = int(len(str(number)) - 1)
+    while number > 1:
+        number = round(number % 1, length)
+        return number
+
+def find_max_min(list_number):
+    '''
+    Нахождение минимального и максимального элемента в списке
+    '''
+    maximum = check(list_number[0])
+    minimum = check(list_number[0])
+    for i in range(len(list_number) - 1):
+        if maximum < check(list_number[i+1]):
+            maximum = check(list_number[i+1])
+        elif minimum > check(list_number[i+1]):
+            minimum = check(list_number[i+1])
+    return minimum, maximum
+
+result = round(find_max_min(list_num)[1] - find_max_min(list_num)[0], 2)
+print(f'Разница между максимальным и минимальным элементами -> {result}')
+
+------------------------------------------------
+
+4. # Напишите программу, которая будет 
+# преобразовывать десятичное число в двоичное.
+# *Пример:*
+# - 45 -> 101101
+# - 3 -> 11
+# - 2 -> 10
+
+def get_number(input_string):
+    '''
+    Проверка ввода на число
+    '''
+    try:
+        num = int(input(input_string))
+        return num
+    except(ValueError):
+        return get_number(input_string)
+
+num = get_number("Введите число: ")
+list_num = []
+
+def transformation(number, list_number):
+    '''
+    Преобразование десятичного числа в двоичное
+    '''
+    while number > 0:
+        remains = number % 2
+        number = int(number / 2)
+        list_number.append(str(remains))
+    return list_number[::-1]
+
+result = ''.join(transformation(num, list_num))
+print(f'{num} -> {result}')
+
+------------------------------------------------
+
+5. # Задайте число. Составьте список чисел Фибоначчи, 
+# в том числе для отрицательных индексов.
+# *Пример:*
+# - для k = 8 список будет выглядеть так: [-21 ,13, -8, 5, −3, 2, −1, 1, 0, 1, 1, 2, 3, 5, 8, 13, 21]
+
+def get_number(input_string):
+    '''
+    Проверка ввода на число
+    '''
+    try:
+        num = int(input(input_string))
+        return num
+    except(ValueError):
+        return get_number(input_string)
+
+number = abs(get_number("Введите число: "))
+
+def negafibo(num):
+    '''
+    Негафибоначчи
+    '''
+    list_num = []
+    if -num == -1:
+        list_num.append(1)
+        return list_num
+    if -num == -2:
+        list_num.append(1)
+        list_num.append(-1)
+        return list_num
+    elif -num < -2:
+        list_num.append(1)
+        list_num.append(-1)
+        for i in range(2, num):
+            fib = (list_num[i - 1]) - (list_num[i - 2])
+            list_num.append(-fib)
+    else:
+        return
+    return list_num[::-1]
+
+def fibo(num):
+    '''
+    Фибоначчи
+    '''
+    list_num = []
+    if num == 0:
+        list_num.append(0)
+        return list_num
+    if num == 1:
+        list_num.append(0)
+        list_num.append(1)
+        return list_num
+    if num == 2:
+        list_num.append(0)
+        list_num.append(1)
+        list_num.append(1)
+        return list_num
+    else:
+        list_num.append(0)
+        list_num.append(1)
+        list_num.append(1)
+        for i in range(3, num + 1):
+            fib = (list_num[i - 1]) + (list_num[i - 2])
+            list_num.append(fib)
+    return list_num
+
+list_number_1 = negafibo(number)
+list_number_2 = fibo(number)
+if number == 0:
+    print(fibo(number))
+else:
+    list_number_1.extend(list_number_2)
+    print(list_number_1)
